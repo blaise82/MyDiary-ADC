@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --fix ./",
-    "test": "nyc --reporter=html --reporter=text mocha --timeout 100000 --require @babel/register \"./{,!(node_modules)/**/}Server/test/*.test.js\" --exit",
+    "test": "nyc --reporter=html --reporter=text mocha --timeout 100000 --require @babel/register \"./{,!(node_modules)/**/}server/test/*.test.js\" --exit",
     "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "start": "nodemon --exec babel-node Server/index.js",
     "build": "babel Server --out-dir build",
