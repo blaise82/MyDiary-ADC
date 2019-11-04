@@ -430,4 +430,78 @@ describe('Diary Entry test', () => {
         });
     });
   });
+
+  describe('/Get Entry description(Content)', () => {
+    it('Should now allow the use of non GUIDs', (done) => {
+      const entryIdFinal = '231325343453453452345tggfgdfg';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v1/entries/${entryIdFinal}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should return entry not found', (done) => {
+      const notfound = '098fcafe-2759-4c1b-957f-2c3baa6b9653';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v1/entries/${notfound}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should not return an entry: Token is not provided', (done) => {
+      const trueId = '2dc431bf-5af5-40c4-9f52-75a2c8939b42';
+      chai
+        .request(app)
+        .get(`/api/v1/entries/${trueId}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should not return an entry : entry does not belong to you', (done) => {
+      const trueId2 = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'secondUser@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v1/entries/${trueId2}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should return an entry with the specified ID', (done) => {
+      const entryIdFinal = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v1/entries/${entryIdFinal}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.data).to.be.a('object');
+          done();
+        });
+    });
+  });
 });
