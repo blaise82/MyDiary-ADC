@@ -15,6 +15,7 @@ class Entry {
       modifiedDate: moment().format('LLLL'),
     };
     entryModel.entries.push(newEntry);
+    
     return res.status(201).json({
       status: 201,
       message: 'entry successfully created',
