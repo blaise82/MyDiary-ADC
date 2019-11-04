@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import moment from 'moment';
 import uuid from 'uuid';
 import jwt from 'jsonwebtoken';
-import userModel from '../models/User';
+import userModel from '../models/user';
 
 class User {
   static async signUp(req, res) {
