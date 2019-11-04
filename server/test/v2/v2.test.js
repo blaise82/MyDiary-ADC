@@ -392,4 +392,62 @@ describe('Diary Entry test', () => {
         });
     });
   });
+  describe('/Get Entry description(Content)', () => {
+    it('Should now allow the use of non GUIDs', (done) => {
+      const entryIdFinal = '231325343453453452345tggfgdfg';
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v2/entries/${entryIdFinal}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should return entry not found', (done) => {
+      const notfound = '8bce732d-9bef-470d-9a7e-8db03af17bbf';
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v2/entries/${notfound}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should not return an entry: Token is not provided', (done) => {
+      const trueId = '277f4569-cf63-42d3-9f13-f56e9c7a4200';
+      chai
+        .request(app)
+        .get(`/api/v2/entries/${trueId}`)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should return an entry with the specified ID', (done) => {
+      const entryIdFinal = '63835241-9fee-435f-a4ce-2bbb99fc896b';
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get(`/api/v2/entries/${entryIdFinal}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.data).to.be.a('object');
+          done();
+        });
+    });
+  });
 });

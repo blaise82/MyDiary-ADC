@@ -47,5 +47,30 @@ class Entry {
       return res.status(400).json(error.message);
     }
   }
+  
+  static async getOne(req, res) {
+    const { id } = req.params;
+    const { email } = req.tokenData;
+    const text = 'SELECT * FROM entries WHERE id = $1 AND created_by = $2';
+    try {
+      const { rows } = await conn.query(text, [id, email]);
+      if (!rows[0]) {
+        return res.status(404).json({
+          status: 404,
+          error: 'entry not found',
+        });
+      }
+      const found = rows[0];
+      return res.status(201).json({
+        status: 201,
+        data: {
+          found,
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
+      return res.status(400).send(error);
+    }
+  }
 }
 export default Entry;
