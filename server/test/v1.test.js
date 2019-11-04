@@ -153,4 +153,113 @@ describe('User Tests', () => {
         });
     });
   });
+
+  describe('User Signin', () => {
+    it('Should NOT allow a user to signin without providing an email and a password ', (done) => {
+      const testData8 = {
+        password: 'Password@100',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signup')
+        .send(testData8)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+
+    it('Should NOT allow a user to signin: Email not found', (done) => {
+      const testData9 = {
+        email: 'testEmail@gmail.com',
+        password: 'password',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(testData9)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT allow a user to signin: Incorrect password', (done) => {
+      const testData10 = {
+        email: 'example@gmail.com',
+        password: 'wrongPassword',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(testData10)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT allow a user to signin without providing a password (empty or missing password ) ', (done) => {
+      const testData11 = {
+        email: 'example@gmail.com',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(testData11)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT allow a user to signin without providing an email (empty or missing email ) ', (done) => {
+      const testData12 = {
+        password: 'Password@100',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(testData12)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT allow a user to signin extra data ) ', (done) => {
+      const testData12 = {
+        email: 'example@gmail.com',
+        password: 'Password@100',
+        extra: 'hello there i am extra data',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(testData12)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+
+    it('Should allow a user to signin', (done) => {
+      const testData13 = {
+        email: 'example@gmail.com',
+        password: 'Password@100',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(testData13)
+        .end((err, res) => {
+          expect(res).to.have.status(202);
+          expect(res.body).to.have.property('message');
+          expect(res.body).to.have.property('data');
+          done();
+        });
+    });
+  });
 });
