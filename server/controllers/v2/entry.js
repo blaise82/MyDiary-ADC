@@ -104,5 +104,20 @@ class Entry {
       return res.status(400).send(error);
     }
   }
+
+  static async delete(req, res) {
+    const { id } = req.params;
+    const { email } = req.tokenData;
+    const deleteQuery = 'DELETE FROM entries WHERE id=$1 AND created_by=$2 returning *';
+    try {
+      const { rows } = await conn.query(deleteQuery, [id, email]);
+      if (!rows[0]) {
+        return res.status(404).send({ message: 'entry not found' });
+      }
+      return res.status(200).send({ message: 'entry deleted successfully' });
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
 }
 export default Entry;
