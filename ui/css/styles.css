@@ -167,3 +167,82 @@ li a {
   -moz-box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.75);
 }
+
+/*form styles*/
+
+.form-style {
+  max-width: 50%;
+  margin: 50px auto;
+  background: #fff;
+  border-radius: 2px;
+  margin-top: 13vh;
+  font-family: "Trebuchet MS", sans-serif;
+  text-align: center;
+}
+
+.form-style ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.form-style li {
+  display: block;
+  padding: 9px;
+  border: 1px solid #dddddd;
+  margin-bottom: 30px;
+  border-radius: 3px;
+}
+.form-style li > label {
+  display: block;
+  float: left;
+  margin-top: -19px;
+  background: #ffffff;
+  height: 14px;
+  padding: 2px 5px 2px 5px;
+  color: #b9b9b9;
+  font-size: 14px;
+  overflow: hidden;
+  font-family: "Trebuchet MS", sans-serif;
+}
+.form-style input[type="text"],
+.form-style input[type="password"],
+.form-style textarea {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  display: block;
+  outline: none;
+  border: none;
+  height: 25px;
+  line-height: 25px;
+  font-size: 16px;
+  padding: 0;
+  font-family: "Trebuchet MS", sans-serif;
+}
+.form-style textarea {
+  height: 60vh;
+  resize: none;
+}
+/*headings*/
+.fs-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+.fs-subtitle {
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+.flink {
+  float: left;
+  text-decoration: none;
+  color: #e04249;
+}
+
+.bright {
+  float: right;
+}
