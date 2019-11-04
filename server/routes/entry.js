@@ -8,5 +8,6 @@ const router = express.Router();
 router.post('/entries', [checkToken, checkNewEntry], Entry.create);
 router.get('/entries', checkToken, Entry.getAll);
 router.get('/entries/:id', [validateParams, checkToken], Entry.getOne);
+router.patch('/entries/:id', [validateParams, checkToken, checkNewEntry], Entry.update);
 
 export default router;
