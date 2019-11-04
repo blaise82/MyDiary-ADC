@@ -226,3 +226,115 @@ describe('User Tests', () => {
     });
   });
 });
+
+describe('Diary Entry test', () => {
+  describe('/POST /api/v2/entries (creation of a diary entry)', () => {
+    it('Should NOT Allow user to create an entry without title data', (done) => {
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      const entryTestData1 = {
+        description: 'my description',
+      };
+      chai
+        .request(app)
+        .post('/api/v2/entries')
+        .set('auth', token)
+        .send(entryTestData1)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT Allow user to create an entry without description data', (done) => {
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      const entryTestData2 = {
+        title: 'my title',
+      };
+      chai
+        .request(app)
+        .post('/api/v2/entries')
+        .set('auth', token)
+        .send(entryTestData2)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT Allow user to create an entry with invalid no data', (done) => {
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .post('/api/v2/entries')
+        .set('auth', token)
+        .send({})
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT Allow user to create a new diary entry without a login token (logged in user)', (done) => {
+      const entryTestData4 = {
+        title: 'diary',
+        description: 'Updated description',
+      };
+      chai
+        .request(app)
+        .post('/api/v2/entries')
+        .send(entryTestData4)
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should NOT Allow user to create a new diary entry with token fake token(fake email)', (done) => {
+      const entryTestData5 = {
+        title: 'Updated title',
+        description: 'Updated description',
+      };
+      const token = jwt
+        .sign({ email: 'invalid@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .post('/api/v2/entries')
+        .set('auth', token)
+        .send(entryTestData5)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+
+    it('Should Allow user to  create an new diary entry', (done) => {
+      const entryTestData = {
+        title: 'new title',
+        description: 'hi i am testing a new entry',
+      };
+
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .post('/api/v2/entries')
+        .set('auth', token)
+        .send(entryTestData)
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.data).to.be.a('object');
+          expect(res.body).to.have.property('message');
+          done();
+        });
+    });
+  });
+});
