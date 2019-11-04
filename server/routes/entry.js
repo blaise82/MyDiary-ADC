@@ -1,5 +1,5 @@
 import express from 'express';
-import Entry from '../controllers/entry';
+import Entry from '../controllers/Entry';
 import checkToken from '../middleware/authenticate';
 import checkNewEntry from '../middleware/checkNewEntry';
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import v1userRoute from './routes/user';
-import v1entryRoute from './routes/entry';
+import v1userRoute from './routes/User';
+import v1entryRoute from './routes/Entry';
 
 dotenv.config();
 const bodyParser = require('body-parser');
