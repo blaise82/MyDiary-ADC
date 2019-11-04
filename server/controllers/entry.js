@@ -91,6 +91,30 @@ class Entry {
       },
     });
   }
+
+  static delete(req, res) {
+    const { id } = req.params;
+    const { email } = req.tokenData;
+    const Found = entryModel.entries.find((element) => element.id === id);
+    if (!Found) {
+      return res.status(404).json({
+        status: 404,
+        error: 'entry not found',
+      });
+    }
+    if (Found.createdBy !== email) {
+      return res.status(401).json({
+        status: 401,
+        error: 'This entry does not belong to you',
+      });
+    }
+    const index = entryModel.entries.indexOf(Found);
+    entryModel.entries.splice(index, 1);
+    return res.status(204).json({
+      status: 204,
+      message: 'entry successfully deleted',
+    });
+  }
 }
 
 export default Entry;

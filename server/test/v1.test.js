@@ -623,4 +623,72 @@ describe('Diary Entry test', () => {
         });
     });
   });
+
+  describe('/DELETE Delete an entry', () => {
+    it('Should return entry not found', (done) => {
+      const notfound2 = '098fcafe-2759-4c1b-957f-2c3baa6b9653';
+      const testEntry2 = {
+        title: 'hello not found?',
+        description: 'my updated description',
+      };
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .delete(`/api/v1/entries/${notfound2}`)
+        .set('auth', token)
+        .send(testEntry2)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('error');
+        });
+      done();
+    });
+    it('Should Not Delete Any Entry who gave face id', (done) => {
+      const DeleteId2 = 'a9dae559-10c1-41c8-936c-18788d61be9c-fake';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .delete(`/api/v1/entries/${DeleteId2}/`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+        });
+      done();
+    });
+    it('Should should not allow user to delete an entry which is not his/hers', (done) => {
+      const DeleteId = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'secondUser@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .delete(`/api/v1/entries/${DeleteId}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+        });
+      done();
+    });
+
+    it('Should allow user to successfully delete an entry', (done) => {
+      const DeleteId = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .delete(`/api/v1/entries/${DeleteId}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(204);
+        });
+      done();
+    });
+  });
 });
