@@ -54,6 +54,38 @@ class Users {
       return res.status(400).send(error);
     }
   }
+
+  static async signIn(req, res) {
+    const { email, password } = req.body;
+    const findAllQuery = 'SELECT * FROM users WHERE email= $1';
+    try {
+      const { rows, rowCount } = await conn.query(findAllQuery, [email]);
+      if (!rowCount) {
+        return res
+          .status(404)
+          .json({ status: 404, error: 'user with this Email not found' });
+      }
+      const hashedPassword = rows[0].password;
+      const compare = await bcrypt.compare(password, hashedPassword);
+      if (compare) {
+        const token = jwt.sign(
+          { email },
+          process.env.SECRET,
+          { expiresIn: '7d' },
+        );
+        return res.status(202).json({
+          status: 202,
+          message: 'User logged in successfully',
+          data: { token },
+        });
+      }
+      return res
+        .status(401)
+        .json({ status: 401, error: 'Wrong Password' });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  }
 }
 
 export default Users;
