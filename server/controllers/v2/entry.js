@@ -32,5 +32,20 @@ class Entry {
       });
     }
   }
+
+  static async getAll(req, res) {
+    const createdBy = req.tokenData.email;
+    const findAllQuery = 'SELECT * FROM entries WHERE created_by=$1';
+    try {
+      const { rows } = await conn.query(findAllQuery, [createdBy]);
+      return res.status(200).json({
+        data: {
+          rows,
+        },
+      });
+    } catch (error) {
+      return res.status(400).json(error.message);
+    }
+  }
 }
 export default Entry;
