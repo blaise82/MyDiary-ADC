@@ -33,5 +33,33 @@ class User {
       },
     });
   }
+
+
+  static async signIn(req, res) {
+    const { email, password } = req.body;
+    const userFound = userModel.users.find((user) => user.email === email);
+    if (userFound) {
+      const {
+        password: hashedPassword,
+        firstname,
+        lastname,
+        reminder,
+      } = userFound;
+      const compare = await bcrypt.compare(password, hashedPassword);
+      if (compare) {
+        const token = await jwt.sign({
+          firstname, lastname, email, reminder,
+        },
+        process.env.SECRET, { expiresIn: '7d' });
+        return res.status(202).json({
+          status: 202,
+          message: 'User logged in successfully',
+          data: { token },
+        });
+      }
+      return res.status(401).json({ status: 401, error: 'incorrect password' });
+    }
+    return res.status(404).json({ status: 404, error: 'Email not found' });
+  }
 }
 export default User;
