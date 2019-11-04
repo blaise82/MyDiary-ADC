@@ -60,6 +60,37 @@ class Entry {
       },
     });
   }
+
+  static update(req, res) {
+    const { title, description } = req.body;
+    const { id } = req.params;
+    const { email } = req.tokenData;
+    const Found = entryModel.entries.find((element) => element.id === id);
+    if (!Found) {
+      return res.status(404).json({
+        status: 404,
+        error: 'entry not found',
+      });
+    }
+    if (Found.createdBy !== email) {
+      return res.status(401).json({
+        status: 401,
+        error: 'This entry does not belong to you',
+      });
+    }
+    const index = entryModel.entries.indexOf(Found);
+    entryModel.entries[index].title = title || Found.title;
+    entryModel.entries[index].description = description || Found.description;
+    entryModel.entries[index].modifiedDate = moment().format('LLLL');
+    const modified = entryModel.entries[index];
+    return res.status(200).json({
+      status: 200,
+      message: 'entry successfully edited',
+      data: {
+        modified,
+      },
+    });
+  }
 }
 
 export default Entry;

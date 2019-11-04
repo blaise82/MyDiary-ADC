@@ -504,4 +504,123 @@ describe('Diary Entry test', () => {
         });
     });
   });
+  describe('/patch Modify an entry', () => {
+    it('Should return entry not found', (done) => {
+      const notfound2 = '098fcafe-2759-4c1b-957f-2c3baa6b9653';
+      const testEntry2 = {
+        title: 'hello not found?',
+        description: 'my updated description',
+      };
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .patch(`/api/v1/entries/${notfound2}`)
+        .set('auth', token)
+        .send(testEntry2)
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          expect(res.body).to.have.property('error');
+        });
+      done();
+    });
+    it('Should Not Modify an Entry With no Title Provided', (done) => {
+      const testEntry2 = {
+        description: 'my updated description',
+      };
+      const entryId2 = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .patch(`/api/v1/entries/${entryId2}`)
+        .set('auth', token)
+        .send(testEntry2)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+        });
+      done();
+    });
+
+    it('Should Not Modify an Entry With no description Provided', (done) => {
+      const testEntry3 = {};
+      const entryId2 = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .patch(`/api/v1/entries/${entryId2}`)
+        .set('auth', token)
+        .send(testEntry3)
+        .end((err, res) => {
+          expect(res).to.have.status(400);
+          expect(res.body).to.have.property('error');
+        });
+      done();
+    });
+
+    it('Should Not Allow User To Modify An Entry Which Is Not His/Hers', (done) => {
+      const entryId4 = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'secondUser@gmail.com' }, process.env.SECRET)
+        .toString();
+      const testEntry5 = {
+        title: 'Updated Title',
+        description: 'Updated description',
+      };
+      chai
+        .request(app)
+        .patch(`/api/v1/entries/${entryId4}`)
+        .set('auth', token)
+        .send(testEntry5)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should Not Allow Modification Without An Authentication (No Login)', (done) => {
+      const entryId6 = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const testEntry6 = {
+        title: 'Updated Title',
+        description: 'Updated description',
+      };
+      const token = '';
+      chai
+        .request(app)
+        .patch(`/api/v1/entries/${entryId6}`)
+        .set('auth', token)
+        .send(testEntry6)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('Should successfully modify Entry', (done) => {
+      const testEntry = {
+        title: 'My updated title',
+        description: 'my updated description',
+      };
+      const entryId = 'a9dae559-10c1-41c8-936c-18788d61be9c';
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .patch(`/api/v1/entries/${entryId}`)
+        .set('auth', token)
+        .send(testEntry)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.data).to.be.a('object');
+          expect(res.body).to.have.property('message');
+          done();
+        });
+    });
+  });
 });
