@@ -70,12 +70,10 @@ export const createTables = () => {
     `;
   const queries = `${users};${entries};${createUser1};${createUser2};${createEntry1};${createEntry2}`;
   pool.query(queries).then((res) => {
-    console.log(res);
     pool.end();
     return res;
   })
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
       pool.end();
     });
 };
@@ -89,8 +87,7 @@ export const dropTables = () => {
     pool.end();
     return res;
   })
-    .catch((error) => {
-      console.log(error);
+    .catch(() => {
       pool.end();
     });
 };
