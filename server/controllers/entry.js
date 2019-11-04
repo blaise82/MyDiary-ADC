@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 import moment from 'moment';
-import entryModel from '../models/Entry';
+import entryModel from '../models/entry';
 
 class Entry {
   static create(req, res) {
