@@ -337,4 +337,59 @@ describe('Diary Entry test', () => {
         });
     });
   });
+  describe('/Get /api/v2/entries (Getting All entry)', () => {
+    it('should not allow user  get all entry without a token (authenticity)', (done) => {
+      chai
+        .request(app)
+        .get('/api/v2/entries')
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('should not allow user  get all entry with a fake token (wrong secret key use)', (done) => {
+      const token = jwt
+        .sign({ email: 'example@gmail.com' }, 'fake secret key')
+        .toString();
+      chai
+        .request(app)
+        .get('/api/v2/entries')
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+    it('should not allow user  get all entry with a fake token (wrong email)', (done) => {
+      const token = jwt
+        .sign({ email: 'fakeEmail@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get('/api/v2/entries')
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(401);
+          expect(res.body).to.have.property('error');
+          done();
+        });
+    });
+
+    it('should get all entry of a given user', (done) => {
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get('/api/v2/entries')
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.data).to.be.a('object');
+          done();
+        });
+    });
+  });
 });
