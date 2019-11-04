@@ -5,5 +5,4 @@ import checkNewEntry from '../middleware/checkNewEntry';
 
 const router = express.Router();
 router.post('/entries', [checkToken, checkNewEntry], Entry.create);
-
 export default router;

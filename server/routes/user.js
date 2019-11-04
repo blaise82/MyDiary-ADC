@@ -7,5 +7,4 @@ const router = express.Router();
 
 router.post('/signup', signupValidateData, User.signUp);
 router.post('/signin', signinValidateData, User.signIn);
-
 export default router;
