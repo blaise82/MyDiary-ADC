@@ -1,7 +1,6 @@
 class Entry {
   constructor() {
     this.entries = [
-      
       {
         id: 'a9dae559-10c1-41c8-936c-18788d61be9c',
         title: 'today i meet my ex',
