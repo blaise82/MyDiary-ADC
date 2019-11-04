@@ -36,6 +36,30 @@ class Entry {
       data: { myEntries },
     });
   }
+
+  static getOne(req, res) {
+    const { id } = req.params;
+    const { email } = req.tokenData;
+    const Found = entryModel.entries.find((element) => element.id === id);
+    if (!Found) {
+      return res.status(404).json({
+        status: 404,
+        error: 'entry not found',
+      });
+    }
+    if (Found.createdBy !== email) {
+      return res.status(401).json({
+        status: 401,
+        error: 'This entry does not belong to you',
+      });
+    }
+    return res.status(200).json({
+      status: 200,
+      data: {
+        Found,
+      },
+    });
+  }
 }
 
 export default Entry;
