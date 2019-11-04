@@ -1,8 +1,7 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import { describe, it } from 'mocha';
-import jwt from 'jsonwebtoken';
-import app from '../../index';
+import app from '../index';
 
 chai.use(chaiHttp);
 describe('Server Config Check', () => {
@@ -26,4 +25,3 @@ describe('Server Config Check', () => {
       });
   });
 });
-
