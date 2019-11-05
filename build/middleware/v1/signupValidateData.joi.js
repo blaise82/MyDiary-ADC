@@ -16,7 +16,6 @@ var checkNewUser = function checkNewUser(req, res, next) {
     email: _joi["default"].string().email({
       minDomainSegments: 2
     }).required(),
-    // eslint-disable-next-line no-useless-escape
     password: _joi["default"].string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/).required()
   });
 

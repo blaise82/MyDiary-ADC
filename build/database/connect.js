@@ -11,7 +11,6 @@ var _pg = require("pg");
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-// src/usingDB/models/index.js
 _dotenv["default"].config();
 
 var pool = new _pg.Pool({

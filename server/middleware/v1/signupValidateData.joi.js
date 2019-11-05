@@ -7,7 +7,6 @@ const checkNewUser = (req, res, next) => {
     lastname: Joi.string().alphanum().min(3).max(20)
       .required(),
     email: Joi.string().email({ minDomainSegments: 2 }).required(),
-    // eslint-disable-next-line no-useless-escape
     password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/).required(),
   });
   const schema = Joi.validate(req.body, UserSchemas);

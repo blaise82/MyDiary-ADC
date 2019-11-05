@@ -7,7 +7,6 @@ import app from '../../index';
 
 chai.use(chaiHttp);
 
-// eslint-disable-next-line no-undef
 describe('User Tests', () => {
   describe('/POST v2 User SignUp', () => {
     it('Should Not Allow A User To SignUp With Invalid: firstname', (done) => {

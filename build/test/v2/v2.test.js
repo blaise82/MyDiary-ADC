@@ -14,8 +14,7 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _index = _interopRequireDefault(require("../../index"));
 
-_chai["default"].use(_chaiHttp["default"]); // eslint-disable-next-line no-undef
-
+_chai["default"].use(_chaiHttp["default"]);
 
 (0, _mocha.describe)('User Tests', function () {
   (0, _mocha.describe)('/POST v2 User SignUp', function () {
