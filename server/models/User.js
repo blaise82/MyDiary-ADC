@@ -8,7 +8,6 @@ class User {
         email: 'example@gmail.com',
         reminder: 'off',
         password: '$2b$10$P4Aw/bj0axgK20Zn7zYpnuyH7ezdekXzjrfqL4BgjY2BkY4RBy/G2',
-        // Password@100
         createdDate: 'Wednesday, October 23, 2019 5:35 PM',
       },
       {
@@ -18,7 +17,6 @@ class User {
         email: 'secondUser@gmail.com',
         reminder: 'off',
         password: '$2b$10$P4Aw/bj0axgK20Zn7zYpnuyH7ezdekXzjrfqL4BgjY2BkY4RBy/G2',
-        // Password@100
         createdDate: 'Wednesday, October 23, 2019 5:35 PM',
       },
     ];

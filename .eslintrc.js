@@ -17,5 +17,6 @@ module.exports = {
   },
   rules: {
     "consistent-return":"off",
+    "no-useless-escape": "off"
   },
 };
