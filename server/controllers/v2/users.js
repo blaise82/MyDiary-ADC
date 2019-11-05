@@ -21,7 +21,7 @@ class Users {
     } catch (error) {
       return res.status(400).json(error);
     }
-    const text = `INSERT INTO
+    const insertQuery = `INSERT INTO
       users(id, firstname, lastname, email,reminder, created_date, password)
       VALUES($1, $2, $3, $4, $5, $6, $7)`;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,7 +36,7 @@ class Users {
     ];
 
     try {
-      await conn.query(text, values);
+      await conn.query(insertQuery, values);
       const token = jwt.sign(
         { email },
         process.env.SECRET,
@@ -83,6 +83,32 @@ class Users {
         .json({ status: 401, error: 'Wrong Password' });
     } catch (error) {
       return res.status(400).json(error);
+    }
+  }
+
+  static async updateReminder(req, res) {
+    const { email } = req.tokenData;
+    const selectQuery = 'SELECT * FROM users WHERE email=$1';
+    const updateOneQuery = `UPDATE users
+  SET reminder=$1 WHERE email=$2 returning *`;
+    try {
+      const responseSelect = await conn.query(selectQuery, [email]);
+      if (!responseSelect.rows[0]) {
+        return res.status(400).send({ message: 'user not found' });
+      }
+      let response;
+      if (responseSelect.rows[0].reminder === 'on') {
+        response = await conn.query(updateOneQuery, ['off', email]);
+      } else {
+        response = await conn.query(updateOneQuery, ['on', email]);
+      }
+      const modified = response.rows[0];
+      return res.status(200).json({
+        status: 200,
+        message: `${modified.firstname}, Reminder is set ${modified.reminder}`,
+      });
+    } catch (error) {
+      return res.status(400).send(error);
     }
   }
 }
