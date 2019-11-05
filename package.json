@@ -3,6 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "10.14.2",
+    "npm": "6.x"
+  },
+  "nyc": {
+    "include": "Server",
+    "exclude": [
+      "build",
+      "Server/index.js"
+    ]
+  },
   "scripts": {
     "lint": "eslint --fix ./",
     "test": "npm run drop && npm run tables && nyc --reporter=html --reporter=text mocha --timeout 700000 --require @babel/register \"./{,!(node_modules)/**/}server/test/*/*.test.js\" --exit",
