@@ -8,10 +8,10 @@
     "npm": "6.x"
   },
   "nyc": {
-    "include": "Server",
+    "include": "server",
     "exclude": [
       "build",
-      "Server/index.js"
+      "server/index.js"
     ]
   },
   "scripts": {
@@ -21,7 +21,7 @@
     "tables": "node --require @babel/register ./server/database  createTables",
     "drop":"node --require @babel/register ./server/database  dropTables",
     "start": "nodemon --exec babel-node Server/index.js",
-    "build": "babel Server --out-dir build",
+    "build": "babel server --out-dir build",
     "serve": "node build/index.js"
   
   },
