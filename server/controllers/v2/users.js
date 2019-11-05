@@ -19,7 +19,6 @@ class Users {
           .send({ status: 401, error: 'Email already exist' });
       }
     } catch (error) {
-      console.log(error.message);
       return res.status(400).json(error);
     }
     const text = `INSERT INTO

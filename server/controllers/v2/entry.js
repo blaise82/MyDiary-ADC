@@ -9,13 +9,16 @@ class Entry {
     const text = `INSERT INTO
       entries(id, title, description, created_by,created_date, modified_date)
       VALUES($1, $2, $3, $4, $5, $6)`;
+    const id = uuid.v4();
+    const createdDate = moment().format('LLLL');
+    const modifiedDate = moment().format('LLLL');
     const newEntry = [
-      uuid.v4(),
+      id,
       title,
       description,
       createdBy,
-      moment().format('LLLL'),
-      moment().format('LLLL'),
+      createdDate,
+      modifiedDate,
     ];
     try {
       await conn.query(text, newEntry);
@@ -23,7 +26,12 @@ class Entry {
         status: 201,
         message: 'entry successfully created',
         data: {
-          newEntry,
+          id,
+          title,
+          description,
+          createdBy,
+          createdDate,
+          modifiedDate,
         },
       });
     } catch (error) {
@@ -117,6 +125,22 @@ class Entry {
       return res.status(200).send({ message: 'entry deleted successfully' });
     } catch (error) {
       return res.status(400).send(error);
+    }
+  }
+
+  static async getTotal(req, res) {
+    const createdBy = req.tokenData.email;
+    const findAllQuery = 'SELECT * FROM entries WHERE created_by=$1';
+    try {
+      const { rowCount } = await conn.query(findAllQuery, [createdBy]);
+      return res.status(200).json({
+        message: `You have ${rowCount} entries`,
+        data: {
+          rowCount,
+        },
+      });
+    } catch (error) {
+      return res.status(400).json(error.message);
     }
   }
 }
