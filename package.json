@@ -21,8 +21,8 @@
     "tables": "node --require @babel/register ./server/database  createTables",
     "drop":"node --require @babel/register ./server/database  dropTables",
     "start": "nodemon --exec babel-node Server/index.js",
-    "build": "babel server --out-dir build",
-    "serve": "npm run tables && node build/index.js"
+    "build": "npm run tables && babel server --out-dir build",
+    "serve": "node build/index.js"
   
   },
   "repository": {
