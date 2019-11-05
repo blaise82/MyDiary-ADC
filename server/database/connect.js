@@ -8,9 +8,9 @@ const pool = new Pool({
 });
 
 export default {
-  query(text, params) {
+  query(query, params) {
     return new Promise((resolve, reject) => {
-      pool.query(text, params)
+      pool.query(query, params)
         .then((res) => {
           resolve(res);
         })

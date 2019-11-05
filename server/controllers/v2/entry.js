@@ -6,7 +6,7 @@ class Entry {
   static async add(req, res) {
     const { title, description } = req.body;
     const createdBy = req.tokenData.email;
-    const text = `INSERT INTO
+    const insertQuery = `INSERT INTO
       entries(id, title, description, created_by,created_date, modified_date)
       VALUES($1, $2, $3, $4, $5, $6)`;
     const id = uuid.v4();
@@ -21,7 +21,7 @@ class Entry {
       modifiedDate,
     ];
     try {
-      await conn.query(text, newEntry);
+      await conn.query(insertQuery, newEntry);
       return res.status(201).json({
         status: 201,
         message: 'entry successfully created',
@@ -59,9 +59,9 @@ class Entry {
   static async getOne(req, res) {
     const { id } = req.params;
     const { email } = req.tokenData;
-    const text = 'SELECT * FROM entries WHERE id = $1 AND created_by = $2';
+    const selectQuery = 'SELECT * FROM entries WHERE id = $1 AND created_by = $2';
     try {
-      const { rows } = await conn.query(text, [id, email]);
+      const { rows } = await conn.query(selectQuery, [id, email]);
       if (!rows[0]) {
         return res.status(404).json({
           status: 404,
@@ -83,12 +83,12 @@ class Entry {
   static async update(req, res) {
     const { id } = req.params;
     const { email } = req.tokenData;
-    const text = 'SELECT * FROM entries WHERE id=$1 AND created_by=$2';
+    const selectQuery = 'SELECT * FROM entries WHERE id=$1 AND created_by=$2';
     const updateOneQuery = `UPDATE entries
   SET title=$1,description=$2,modified_date=$3
   WHERE id=$4 returning *`;
     try {
-      const { rows } = await conn.query(text, [id, email]);
+      const { rows } = await conn.query(selectQuery, [id, email]);
       if (!rows[0]) {
         return res.status(404).send({ message: 'entry not found' });
       }
