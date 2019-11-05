@@ -73,6 +73,7 @@ MyDiary is an online journal where users can pen down their thoughts and feeling
 
 ### Author
 Name :  Izabayo Blaise
+
 Email : izabayoblaise82@gmail.com
 
 if you have any issies please add it https://github.com/ngirimana/MyDiary-Adc/issues
