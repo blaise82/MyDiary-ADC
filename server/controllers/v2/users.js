@@ -19,10 +19,9 @@ class Users {
           .send({ status: 401, error: 'Email already exist' });
       }
     } catch (error) {
-      console.log(error.message);
       return res.status(400).json(error);
     }
-    const text = `INSERT INTO
+    const insertQuery = `INSERT INTO
       users(id, firstname, lastname, email,reminder, created_date, password)
       VALUES($1, $2, $3, $4, $5, $6, $7)`;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,7 +36,7 @@ class Users {
     ];
 
     try {
-      await conn.query(text, values);
+      await conn.query(insertQuery, values);
       const token = jwt.sign(
         { email },
         process.env.SECRET,
