@@ -24,7 +24,17 @@ body {
  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.75);
 
 }
-
+.bg2 .wrap p{
+  font-size:0.8em;
+  text-align: left;
+}
+.bg3 .wrap p{
+  font-size:0.8em;
+  text-align: left;
+}
+nav {
+  text-transform: uppercase;
+}
 .bg2 {
   background-color: #e04249;
   width: 100%;
@@ -33,11 +43,21 @@ body {
   right: 0;
   left: 0;
   z-index: -1;
-  height: 15vh;
+  height: 19vh;
   float: left;
   border-top-right-radius: 50%;
  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.75);
 
+}
+.bg3{
+  width:100%;
+  height: auto;
+  float:left;
+  height: 19vh;
+  margin-top:8vh;
+  background-color: #e04249;
+  border-top-right-radius: 50%;
+  box-shadow: 0px 0px 5px -1px rgba(0, 0, 0, 0.75);
 }
 .subtitle1 {
   font-size: 0.9em;
@@ -78,6 +98,7 @@ ul .left {
 
 ul .right {
   float: right;
+  padding-top: 15px;
 }
 
 li .red {
@@ -116,11 +137,15 @@ li a {
   -moz-box-shadow: 0px 0px 2px -1px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 2px -1px rgba(0, 0, 0, 0.75);
 }
+#help{
+  transition: 1s;
+}
 .btn3 {
   height: auto;
   padding-left: 5px;
   padding-right: 5px;
   color: #e04249;
+  margin-top:-5px;
   border: none;
   cursor: pointer;
   background: white;
@@ -681,6 +706,9 @@ cursor: pointer;
     display: block;
     margin:15px auto;
   
+  }
+  .bg1,.bg2,.bg3{
+    display:none;
   }
 }
 
