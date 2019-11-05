@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import userModel from '../../models/User';
 
-async function checkToken(req, res, next) {
+const checkToken = async (req, res, next) => {
   const token = await req.headers.auth;
   let InUserEmail;
   if (typeof token !== 'undefined') {
@@ -32,5 +32,5 @@ async function checkToken(req, res, next) {
       error: 'not authorized to do the task(forbidden)',
     });
   }
-}
+};
 export default checkToken;
