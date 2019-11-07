@@ -11,7 +11,10 @@ class User {
     } = req.body;
     const userFound = userModel.users.find((user) => user.email === email);
     if (userFound) {
-      return res.status(401).send({ status: 401, error: 'Email already exist' });
+      return res.status(401).json({
+        status: 401,
+        error: 'Email already exist',
+      });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
@@ -57,9 +60,15 @@ class User {
           data: { token },
         });
       }
-      return res.status(401).json({ status: 401, error: 'incorrect password' });
+      return res.status(401).json({
+        status: 401,
+        error: 'incorrect password',
+      });
     }
-    return res.status(404).json({ status: 404, error: 'Email not found' });
+    return res.status(404).json({
+      status: 404,
+      error: 'Email not found',
+    });
   }
 }
 export default User;

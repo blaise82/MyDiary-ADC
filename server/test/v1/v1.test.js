@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import app from '../../index';
 
 chai.use(chaiHttp);
-describe('Server Config Check', () => {
+describe('SERVER CONFIG CHECK', () => {
   it('Should return Server Is On', (done) => {
     chai
       .request(app)
@@ -27,8 +27,8 @@ describe('Server Config Check', () => {
   });
 });
 
-describe('User Tests', () => {
-  describe('/POST User SignUp', () => {
+describe('USER TESTS', () => {
+  describe('/POST USER SIGNUP V1', () => {
     it('Should Not Allow A User To SignUp With Invalid: firstname', (done) => {
       const testData2 = {
         firstname: '',
@@ -155,7 +155,7 @@ describe('User Tests', () => {
     });
   });
 
-  describe('User Signin', () => {
+  describe('USER SIGNIN V1', () => {
     it('Should NOT allow a user to signin without providing an email and a password ', (done) => {
       const testData8 = {
         password: 'Password@100',
@@ -265,8 +265,8 @@ describe('User Tests', () => {
   });
 });
 
-describe('Diary Entry test', () => {
-  describe('/POST /api/v1/entries (creation of a diary entry)', () => {
+describe('DIARY ENTRY TEST V1', () => {
+  describe('POST /API/V1/ENTRIES (CREATION OF A DIARY ENTRY)', () => {
     it('Should NOT Allow user to create an entry without title data', (done) => {
       const token = jwt
         .sign({ email: 'example@gmail.com' }, process.env.SECRET)
@@ -375,7 +375,7 @@ describe('Diary Entry test', () => {
         });
     });
   });
-  describe('/Get /api/v1/entries (Getting All entry)', () => {
+  describe('GET /API/V1/ENTRIES (GETTING ALL ENTRY)', () => {
     it('should not allow user  get all entry without a token (authenticity)', (done) => {
       chai
         .request(app)
@@ -504,7 +504,7 @@ describe('Diary Entry test', () => {
         });
     });
   });
-  describe('/patch Modify an entry', () => {
+  describe('/PATCH MODIFY AN ENTRY V1', () => {
     it('Should return entry not found', (done) => {
       const notfound2 = '098fcafe-2759-4c1b-957f-2c3baa6b9653';
       const testEntry2 = {
@@ -624,7 +624,7 @@ describe('Diary Entry test', () => {
     });
   });
 
-  describe('/DELETE Delete an entry', () => {
+  describe('DELETE AN ENTRY V1', () => {
     it('Should return entry not found', (done) => {
       const notfound2 = '098fcafe-2759-4c1b-957f-2c3baa6b9653';
       const testEntry2 = {

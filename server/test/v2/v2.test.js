@@ -7,8 +7,8 @@ import app from '../../index';
 
 chai.use(chaiHttp);
 
-describe('User Tests', () => {
-  describe('/POST v2 User SignUp', () => {
+describe('USER TESTS V2', () => {
+  describe('/POST V2 USER SIGNUP V2', () => {
     it('Should Not Allow A User To SignUp With Invalid: firstname', (done) => {
       const testData2 = {
         firstname: '',
@@ -116,7 +116,7 @@ describe('User Tests', () => {
         });
     });
   });
-  describe('User Signin', () => {
+  describe('USER SIGNIN V2', () => {
     it('Should NOT allow a user to signin without providing an email and a password ', (done) => {
       const testData8 = {
         password: 'Password@100',
@@ -226,8 +226,8 @@ describe('User Tests', () => {
   });
 });
 
-describe('Diary Entry test', () => {
-  describe('/POST /api/v2/entries (creation of a diary entry)', () => {
+describe('DIARY ENTRY TEST V2', () => {
+  describe('/POST /API/V2/ENTRIES (CREATION OF A DIARY ENTRY) V2', () => {
     it('Should NOT Allow user to create an entry without title data', (done) => {
       const token = jwt
         .sign({ email: 'email@gmail.com' }, process.env.SECRET)
@@ -336,8 +336,8 @@ describe('Diary Entry test', () => {
         });
     });
   });
-  describe('/Get /api/v2/entries (Getting All entry)', () => {
-    it('should not allow user  get all entry without a token (authenticity)', (done) => {
+  describe('/GET /API/V2/ENTRIES (GETTING ALL ENTRY) V2', () => {
+    it('Should not allow user  get all entry without a token (authenticity)', (done) => {
       chai
         .request(app)
         .get('/api/v2/entries')
@@ -347,7 +347,7 @@ describe('Diary Entry test', () => {
           done();
         });
     });
-    it('should not allow user  get all entry with a fake token (wrong secret key use)', (done) => {
+    it('Should not allow user  get all entry with a fake token (wrong secret key use)', (done) => {
       const token = jwt
         .sign({ email: 'example@gmail.com' }, 'fake secret key')
         .toString();
@@ -361,7 +361,7 @@ describe('Diary Entry test', () => {
           done();
         });
     });
-    it('should not allow user  get all entry with a fake token (wrong email)', (done) => {
+    it('Should not allow user  get all entry with a fake token (wrong email)', (done) => {
       const token = jwt
         .sign({ email: 'fakeEmail@gmail.com' }, process.env.SECRET)
         .toString();
@@ -376,7 +376,7 @@ describe('Diary Entry test', () => {
         });
     });
 
-    it('should get all entry of a given user', (done) => {
+    it('Should get all entry of a given user', (done) => {
       const token = jwt
         .sign({ email: 'email@gmail.com' }, process.env.SECRET)
         .toString();
@@ -391,7 +391,7 @@ describe('Diary Entry test', () => {
         });
     });
   });
-  describe('/Get Entry description(Content)', () => {
+  describe('/GET ENTRY DESCRIPTION(CONTENT) V2', () => {
     it('Should now allow the use of non GUIDs', (done) => {
       const entryIdFinal = '231325343453453452345tggfgdfg';
       const token = jwt
@@ -449,8 +449,29 @@ describe('Diary Entry test', () => {
         });
     });
   });
+  describe('/PATCH AN ENTRY  V2', () => {
+    it('Should allow a user to update his/her entry', (done) => {
+      const entryId = '63835241-9fee-435f-a4ce-2bbb99fc896b';
+      const entryUpdate = {
+        title: 'new title update',
+        description: 'hi i am testing a new entry',
+      };
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .patch(`/api/v2/entries/${entryId}`)
+        .set('auth', token)
+        .send(entryUpdate)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+  });
   describe('/DELETE ENTRY  V2', () => {
-    it('should allow a user to delete an entry', (done) => {
+    it('Should allow a user to delete an entry', (done) => {
       const entryId = '63835241-9fee-435f-a4ce-2bbb99fc896b';
       const token = jwt
         .sign({ email: 'email@gmail.com' }, process.env.SECRET)
@@ -465,11 +486,9 @@ describe('Diary Entry test', () => {
         });
     });
   });
-  describe('/PATCH AN ENTRY  V2', () => {
 
-  });
   describe('/GET THE TOTAL  NUMBER OF ENTRIES  V2', () => {
-    it('should allow a user to get the total number of entries', (done) => {
+    it('Should allow a user to get the total number of entries', (done) => {
       const token = jwt
         .sign({ email: 'email@gmail.com' }, process.env.SECRET)
         .toString();

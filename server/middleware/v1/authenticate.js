@@ -8,7 +8,7 @@ const checkToken = async (req, res, next) => {
     jwt.verify(token, 'Secret Key', async (err, result) => {
       if (err) {
         if (err.name === 'TokenExpiredError') {
-          return res.status(403).send({
+          return res.status(403).json({
             status: 403,
             error: 'TokenExpired',
           });
@@ -21,13 +21,13 @@ const checkToken = async (req, res, next) => {
     });
     const authUser = userModel.users.find((user) => user.email === InUserEmail);
     if (!authUser) {
-      return res.status(401).send({
+      return res.status(401).json({
         status: 401,
         error: 'not authorized to do the task',
       });
     } next();
   } else {
-    res.status(403).send({
+    res.status(403).json({
       status: 403,
       error: 'not authorized to do the task(forbidden)',
     });
