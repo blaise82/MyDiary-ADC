@@ -109,7 +109,11 @@ class Entry {
         },
       });
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(
+        {
+          error,
+        },
+      );
     }
   }
 
@@ -120,9 +124,9 @@ class Entry {
     try {
       const { rows } = await conn.query(deleteQuery, [id, email]);
       if (!rows[0]) {
-        return res.status(404).send({ message: 'entry not found' });
+        return res.status(404).send({ error: 'entry not found' });
       }
-      return res.status(200).send({ message: 'entry deleted successfully' });
+      return res.status(204).send({ message: 'entry deleted successfully' });
     } catch (error) {
       return res.status(400).send(error);
     }
