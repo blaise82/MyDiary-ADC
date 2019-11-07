@@ -407,7 +407,7 @@ describe('Diary Entry test', () => {
           done();
         });
     });
-    it('Should return entry not found', (done) => {
+    it('Should return entry not found one', (done) => {
       const notfound = '8bce732d-9bef-470d-9a7e-8db03af17bbf';
       const token = jwt
         .sign({ email: 'email@gmail.com' }, process.env.SECRET)
@@ -444,6 +444,41 @@ describe('Diary Entry test', () => {
         .set('auth', token)
         .end((err, res) => {
           expect(res).to.have.status(201);
+          expect(res.body.data).to.be.a('object');
+          done();
+        });
+    });
+  });
+  describe('/DELETE ENTRY  V2', () => {
+    it('should allow a user to delete an entry', (done) => {
+      const entryId = '63835241-9fee-435f-a4ce-2bbb99fc896b';
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .delete(`/api/v2/entries/${entryId}`)
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(204);
+          done();
+        });
+    });
+  });
+  describe('/PATCH AN ENTRY  V2', () => {
+
+  });
+  describe('/GET THE TOTAL  NUMBER OF ENTRIES  V2', () => {
+    it('should allow a user to get the total number of entries', (done) => {
+      const token = jwt
+        .sign({ email: 'email@gmail.com' }, process.env.SECRET)
+        .toString();
+      chai
+        .request(app)
+        .get('/api/v2/entries/total/all')
+        .set('auth', token)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
           expect(res.body.data).to.be.a('object');
           done();
         });
