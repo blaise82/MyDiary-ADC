@@ -14,12 +14,16 @@ class Users {
     try {
       const { rowCount } = await conn.query(findAllQuery, [email]);
       if (rowCount) {
-        return res
-          .status(401)
-          .send({ status: 401, error: 'Email already exist' });
+        return res.status(401).json({
+          status: 401,
+          error: 'Email already exist',
+        });
       }
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
     const insertQuery = `INSERT INTO
       users(id, firstname, lastname, email,reminder, created_date, password)
@@ -50,7 +54,10 @@ class Users {
         },
       });
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   }
 
@@ -62,7 +69,10 @@ class Users {
       if (!rowCount) {
         return res
           .status(404)
-          .json({ status: 404, error: 'user with this Email not found' });
+          .json({
+            status: 404,
+            error: 'user with this Email not found',
+          });
       }
       const hashedPassword = rows[0].password;
       const compare = await bcrypt.compare(password, hashedPassword);
@@ -82,7 +92,10 @@ class Users {
         .status(401)
         .json({ status: 401, error: 'Wrong Password' });
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   }
 
@@ -94,7 +107,10 @@ class Users {
     try {
       const responseSelect = await conn.query(selectQuery, [email]);
       if (!responseSelect.rows[0]) {
-        return res.status(400).send({ message: 'user not found' });
+        return res.status(400).json({
+          status: 400,
+          message: 'user not found',
+        });
       }
       let response;
       if (responseSelect.rows[0].reminder === 'on') {
@@ -108,7 +124,10 @@ class Users {
         message: `${modified.firstname}, Reminder is set ${modified.reminder}`,
       });
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   }
 }

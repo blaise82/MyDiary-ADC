@@ -36,6 +36,7 @@ class Entry {
       });
     } catch (error) {
       return res.status(422).json({
+        status: 422,
         error: error.message,
       });
     }
@@ -47,12 +48,17 @@ class Entry {
     try {
       const { rows } = await conn.query(findAllQuery, [createdBy]);
       return res.status(200).json({
+        status: 200,
         data: {
           rows,
         },
       });
-    } catch (error) {
-      return res.status(400).json(error.message);
+    } catch (erro) {
+      const error = erro.message;
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   }
 
@@ -64,8 +70,8 @@ class Entry {
       const { rows } = await conn.query(selectQuery, [id, email]);
       if (!rows[0]) {
         return res.status(404).json({
-          status: 404,
-          error: 'entry not found',
+          status: 401,
+          error: 'Access Denied',
         });
       }
       const found = rows[0];
@@ -76,7 +82,10 @@ class Entry {
         },
       });
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   }
 
@@ -90,7 +99,10 @@ class Entry {
     try {
       const { rows } = await conn.query(selectQuery, [id, email]);
       if (!rows[0]) {
-        return res.status(404).send({ message: 'entry not found' });
+        return res.status(401).json({
+          status: 401,
+          message: 'Access Denied',
+        });
       }
       const { title, description } = req.body;
       const values = [
@@ -111,6 +123,7 @@ class Entry {
     } catch (error) {
       return res.status(400).json(
         {
+          status: 400,
           error,
         },
       );
@@ -124,11 +137,17 @@ class Entry {
     try {
       const { rows } = await conn.query(deleteQuery, [id, email]);
       if (!rows[0]) {
-        return res.status(404).send({ error: 'entry not found' });
+        return res.status(401).json({
+          status: 401,
+          error: 'Access Denied',
+        });
       }
-      return res.status(204).send({ message: 'entry deleted successfully' });
+      return res.status(204).json({ message: 'entry deleted successfully' });
     } catch (error) {
-      return res.status(400).send(error);
+      return res.status(400).json({
+        status: 400,
+        error,
+      });
     }
   }
 
@@ -144,7 +163,10 @@ class Entry {
         },
       });
     } catch (error) {
-      return res.status(400).json(error.message);
+      return res.status(400).json({
+        status:400,
+        error,
+      });
     }
   }
 }
